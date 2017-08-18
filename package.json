@@ -15,7 +15,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepush": "npm run lint && npm test",
-    "test": "cross-env NODE_CONFIG_DIR='./.config' mocha --compilers js:babel-core/register --require ./testHelpers.js --recursive **/*.spec.js",
+    "test": "cross-env NODE_CONFIG_DIR='./.config' mocha --compilers js:babel-core/register --require ./testHelpers.js client/**/*.spec.js server/**/*.spec.js api/**/*.spec.js",
     "test:watch": "npm run test -- --watch"
   },
   "engines": {
@@ -54,6 +54,7 @@
     "babili-webpack-plugin": "^0.0.10",
     "chai": "^4.1.1",
     "chai-as-promised": "^7.1.1",
+    "chai-immutable": "^1.6.0",
     "co-mocha": "^1.2.0",
     "config": "^1.24.0",
     "cross-env": "^3.1.4",

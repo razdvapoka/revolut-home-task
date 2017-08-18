@@ -2,9 +2,11 @@ require('babel-polyfill')
 require('co-mocha')
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
+const chaiImmutable = require('chai-immutable')
 const sinon = require('sinon')
 
 chai.use(chaiAsPromised)
+chai.use(chaiImmutable)
 
 let sandbox = null
 

@@ -9,6 +9,5 @@ module.exports = Object.assign({}, browserConf, {
   devServerPort: DEV_PORT,
   isProduction: false,
   publicPath: '/assets/',
-  source: path.resolve(__dirname, '..', 'server', 'dist'),
-  ratesApiUrl: `http://api.fixer.io`
+  source: path.resolve(__dirname, '..', 'server', 'dist')
 })
