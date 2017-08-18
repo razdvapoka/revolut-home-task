@@ -1,0 +1,4 @@
+{
+  "extends": "strelka/react",
+  "globals": { "DEBUG": true }
+}

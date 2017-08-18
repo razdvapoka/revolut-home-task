@@ -1,0 +1,28 @@
+{
+  "presets": [
+    ["env", {
+      "useBuiltIns": true,
+      "targets": {
+        "node": "current",
+        "browserslist": {
+          "production": [
+            "last 3 version",
+            "ie >= 11"
+          ],
+          "development": [
+            "last 1 version"
+          ]
+        }
+      },
+      "modules": false,
+      "loose": true
+    }]
+  ],
+  "plugins": [
+    "transform-function-bind",
+    "transform-object-rest-spread",
+    "transform-react-jsx",
+    "react-hot-loader/babel"
+  ],
+  "sourceMaps": "true"
+}
