@@ -1,5 +1,7 @@
 import {
-  FETCH_RATES_SUCCESS
+  FETCH_RATES_SUCCESS,
+  SET_FROM_CURRENCY_INDEX,
+  SET_TO_CURRENCY_INDEX
 } from './consts'
 import { fromJS } from 'immutable'
 
@@ -34,6 +36,10 @@ export default (state = initialState, action) => {
       }), {})
       return state.set(`rates`, fromJS(rates))
     }
+    case SET_FROM_CURRENCY_INDEX:
+      return state.setIn([ `from`, `currencyIndex` ], action.payload)
+    case SET_TO_CURRENCY_INDEX:
+      return state.setIn([ `to`, `currencyIndex` ], action.payload)
     default:
       return state
   }
