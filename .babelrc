@@ -1,23 +1,5 @@
 {
-  "presets": [
-    ["env", {
-      "useBuiltIns": true,
-      "targets": {
-        "node": "current",
-        "browserslist": {
-          "production": [
-            "last 3 version",
-            "ie >= 11"
-          ],
-          "development": [
-            "last 1 version"
-          ]
-        }
-      },
-      "modules": false,
-      "loose": true
-    }]
-  ],
+  "presets": ["es2015"],
   "plugins": [
     "transform-function-bind",
     "transform-object-rest-spread",

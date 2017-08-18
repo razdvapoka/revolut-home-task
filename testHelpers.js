@@ -1,3 +1,5 @@
+require('babel-polyfill')
+require('co-mocha')
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 const sinon = require('sinon')
@@ -16,7 +18,8 @@ const stub = function () {
   return sandbox.stub(...arguments)
 }
 
-global.stub = stub
-global.restore = restore
-global.initSandbox = initSandbox
-global.expect = chai.expect
+module.exports = {
+  initSandbox,
+  restore,
+  stub
+}
