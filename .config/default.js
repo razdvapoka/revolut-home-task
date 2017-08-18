@@ -10,5 +10,5 @@ module.exports = Object.assign({}, browserConf, {
   isProduction: false,
   publicPath: '/assets/',
   source: path.resolve(__dirname, '..', 'server', 'dist'),
-  ratesAppId: '150a55e048d8436399aadfb7aaab9622'
+  ratesApiUrl: `http://api.fixer.io`
 })

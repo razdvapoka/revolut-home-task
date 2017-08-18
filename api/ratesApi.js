@@ -1,11 +1,18 @@
 import axios from 'axios'
 import config from 'config'
 
-const getRates = () => axios.get(
-  `https://openexchangerates.org/api/latest.json`,
-  { params: { app_id: config.ratesAppId } }
+const getRates = (base) => axios.get(
+  `${config.ratesApiUrl}/latest`, {
+    params: {
+      base
+    }
+  })
+
+const getMultipleRates = (currencies) => Promise.all(
+  currencies.map(getRates)
 )
 
 export default {
-  getRates
+  getRates,
+  getMultipleRates
 }
