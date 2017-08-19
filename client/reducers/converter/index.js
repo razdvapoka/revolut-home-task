@@ -1,7 +1,8 @@
 import {
   FETCH_RATES_SUCCESS,
   SET_FROM_CURRENCY_INDEX,
-  SET_TO_CURRENCY_INDEX
+  SET_TO_CURRENCY_INDEX,
+  SET_AMOUNT_TO_CONVERT
 } from './consts'
 import { fromJS } from 'immutable'
 
@@ -12,19 +13,18 @@ export const initialState = fromJS({
     `USD`
   ],
   rates: {},
-  from: {
-    currencyIndex: 0,
-    amount: null
-  },
-  to: {
-    currencyIndex: 1,
-    amount: null
-  },
+  fromCurrencyIndex: 0,
+  toCurrencyIndex: 1,
+  amountToConvert: 0,
   balance: {
     currencyIndex: 0,
     amount: 10000
   }
 })
+
+const isNumeric = n => !isNaN(parseFloat(n)) && isFinite(n)
+
+const isValidAmountToConvert = amount => isNumeric(amount) && amount >= 0
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -37,9 +37,15 @@ export default (state = initialState, action) => {
       return state.set(`rates`, fromJS(rates))
     }
     case SET_FROM_CURRENCY_INDEX:
-      return state.setIn([ `from`, `currencyIndex` ], action.payload)
+      return state.set(`fromCurrencyIndex`, action.payload)
     case SET_TO_CURRENCY_INDEX:
-      return state.setIn([ `to`, `currencyIndex` ], action.payload)
+      return state.set(`toCurrencyIndex`, action.payload)
+    case SET_AMOUNT_TO_CONVERT: {
+      const amountToConvert = action.payload
+      return isValidAmountToConvert(amountToConvert)
+        ? state.set(`amountToConvert`, amountToConvert)
+        : state
+    }
     default:
       return state
   }
