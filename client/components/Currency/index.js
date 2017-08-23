@@ -33,7 +33,7 @@ class Currency extends React.Component {
               {name}
             </span>
             <span className={join(styles.balance, styles.subText)}>
-              {`you have ${balance} ${name}`}
+              {`you have ${Math.floor(parseFloat(balance))} ${name}`}
             </span>
           </div>
           <div className={styles.column}>

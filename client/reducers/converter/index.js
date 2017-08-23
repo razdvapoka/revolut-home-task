@@ -37,7 +37,10 @@ export default (state = initialState, action) => {
       const rawRates = action.payload // an array of rates' api responses
       const rates = rawRates.reduce((result, r) => ({
         ...result,
-        [r.base]: r.rates
+        [r.base]: fromJS(r.rates).map(rate =>
+          // imitate rates fluctuations
+          (parseFloat(rate) + Math.random() * 0.001).toFixed(4)
+        )
       }), {})
       return state.set(`rates`, fromJS(rates))
     }
