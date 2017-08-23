@@ -1,0 +1,60 @@
+.currency {
+  height: 200px;
+  border-top: 1px solid black;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  background-color: rgb(54, 119, 243);
+  color: white;
+  font-family: sans-serif;
+}
+
+.content {
+  height: 100px;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.column {
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.balance {
+  margin-left: 5px;
+}
+
+.rate {
+  align-self: flex-end;
+}
+
+.amount {
+  background-color: transparent;
+  border: 0;
+  color: inherit;
+}
+
+.amount:focus {
+  outline: 0;
+}
+
+.bigText {
+  font-size: 50px;
+}
+
+.subText {
+  font-size: 20px;
+  opacity: 0.6;
+}
+
+.amountWrapper {
+  display: flex;
+}
+
+.sign {
+  margin-right: 20px;
+}

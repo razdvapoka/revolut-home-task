@@ -4,7 +4,9 @@ import {
   SET_TO_CURRENCY_INDEX,
   SET_AMOUNT_TO_CONVERT
 } from './consts'
+
 import { fromJS } from 'immutable'
+import { isNumeric, isEmptyAmount } from '../../utils'
 
 export const initialState = fromJS({
   currencies: [
@@ -15,16 +17,15 @@ export const initialState = fromJS({
   rates: {},
   fromCurrencyIndex: 0,
   toCurrencyIndex: 1,
-  amountToConvert: 0,
+  amountToConvert: null,
   balance: {
     currencyIndex: 0,
     amount: 10000
   }
 })
 
-const isNumeric = n => !isNaN(parseFloat(n)) && isFinite(n)
-
-const isValidAmountToConvert = amount => isNumeric(amount) && amount >= 0
+const isValidAmountToConvert = amount =>
+  isEmptyAmount(amount) || (isNumeric(amount) && amount >= 0)
 
 export default (state = initialState, action) => {
   switch (action.type) {
