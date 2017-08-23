@@ -1,4 +1,5 @@
 import { isEmptyAmount, isEmptyString } from '../../utils'
+import CurrencySelector from '../CurrencySelector'
 import React from 'react'
 import styles from './styles.css'
 
@@ -7,18 +8,21 @@ const join = (...args) => args.join(` `)
 class Currency extends React.Component {
   constructor (props) {
     super(props)
-    this.handleInputValueChange = this.handleInputValueChange.bind(this)
     this.getAdjustedAmount = this.getAdjustedAmount.bind(this)
     this.getSign = this.getSign.bind(this)
+    this.handleInputValueChange = this.handleInputValueChange.bind(this)
   }
 
   render () {
     const {
-      name,
+      balance,
+      currencies,
       fromName,
+      index,
       isShowingConversionResult,
+      name,
       rate,
-      balance
+      selectCurrency
     } = this.props
 
     return (
@@ -55,6 +59,11 @@ class Currency extends React.Component {
             )}
           </div>
         </div>
+        <CurrencySelector
+          currencies={currencies}
+          selectedIndex={index}
+          selectCurrency={selectCurrency}
+        />
       </div>
     )
   }

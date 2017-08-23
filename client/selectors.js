@@ -1,12 +1,12 @@
 import { createSelector } from 'reselect'
 
-const currenciesSelector = state =>
+export const currenciesSelector = state =>
   state.converter.get(`currencies`)
 
-const fromCurrencyIndexSelector = state =>
+export const fromCurrencyIndexSelector = state =>
   state.converter.get(`fromCurrencyIndex`)
 
-const toCurrencyIndexSelector = state =>
+export const toCurrencyIndexSelector = state =>
   state.converter.get(`toCurrencyIndex`)
 
 const balanceSelector = state =>
@@ -40,7 +40,10 @@ export const rateSelector = createSelector(
   fromCurrencySelector,
   toCurrencySelector,
   ratesSelector,
-  (fromCurrency, toCurrency, rates) => rates.getIn([ fromCurrency, toCurrency ])
+  (fromCurrency, toCurrency, rates) =>
+    fromCurrency === toCurrency
+      ? 1
+      : rates.getIn([ fromCurrency, toCurrency ])
 )
 
 const balanceToFromRateSelector = createSelector(

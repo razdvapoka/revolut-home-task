@@ -6,21 +6,29 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
   amountToConvertSelector,
+  convertedBalanceSelector,
+  currenciesSelector,
   fromCurrencySelector,
-  toCurrencySelector,
+  fromCurrencyIndexSelector,
   rateSelector,
-  convertedBalanceSelector
+  toCurrencySelector,
+  toCurrencyIndexSelector
 } from '../../selectors'
 import { isEmptyAmount } from '../../utils'
 
 const Converter = ({
-  fromCurrency,
-  toCurrency,
-  rate,
   amountToConvert,
-  setAmountToConvert,
+  currencies,
   fromBalance,
-  toBalance
+  fromCurrency,
+  fromCurrencyIndex,
+  rate,
+  setAmountToConvert,
+  setFromCurrencyIndex,
+  setToCurrencyIndex,
+  toBalance,
+  toCurrency,
+  toCurrencyIndex
 }) => (
   <form className={styles.converter}>
     <div className={styles.header}>
@@ -37,29 +45,38 @@ const Converter = ({
       </button>
     </div>
     <Currency
-      name={fromCurrency}
       amount={amountToConvert}
-      setAmountToConvert={setAmountToConvert}
       balance={fromBalance}
+      currencies={currencies}
+      index={fromCurrencyIndex}
+      name={fromCurrency}
+      setAmountToConvert={setAmountToConvert}
+      selectCurrency={setFromCurrencyIndex}
     />
     <Currency
-      name={toCurrency}
-      fromName={fromCurrency}
       amount={isEmptyAmount(amountToConvert) ? null : amountToConvert * rate}
-      rate={1 / rate}
-      isShowingConversionResult
       balance={toBalance}
+      currencies={currencies}
+      fromName={fromCurrency}
+      index={toCurrencyIndex}
+      isShowingConversionResult
+      name={toCurrency}
+      rate={1 / rate}
+      selectCurrency={setToCurrencyIndex}
     />
   </form>
 )
 
 const mapStateToProps = state => ({
-  fromCurrency: fromCurrencySelector(state),
-  toCurrency: toCurrencySelector(state),
-  rate: rateSelector(state),
   amountToConvert: amountToConvertSelector(state),
+  currencies: currenciesSelector(state),
   fromBalance: convertedBalanceSelector(state).fromBalance,
-  toBalance: convertedBalanceSelector(state).toBalance
+  fromCurrency: fromCurrencySelector(state),
+  fromCurrencyIndex: fromCurrencyIndexSelector(state),
+  rate: rateSelector(state),
+  toBalance: convertedBalanceSelector(state).toBalance,
+  toCurrency: toCurrencySelector(state),
+  toCurrencyIndex: toCurrencyIndexSelector(state)
 })
 
 const mapDispatchToProps = dispatch =>

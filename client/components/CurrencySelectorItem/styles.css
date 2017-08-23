@@ -1,0 +1,15 @@
+.currencySelectorItem, .currencySelectorItemSelected {
+  width: 10px;
+  height: 10px;
+  margin: 2.5px;
+  border-radius: 50%;
+}
+
+.currencySelectorItem {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.currencySelectorItemSelected {
+  background-color: #898989;
+}
