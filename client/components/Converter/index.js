@@ -14,7 +14,7 @@ import {
   toCurrencySelector,
   toCurrencyIndexSelector
 } from '../../selectors'
-import { isEmptyAmount } from '../../utils'
+import { isEmptyAmount, trimToPrecision } from '../../utils'
 
 const Converter = ({
   amountToConvert,
@@ -24,6 +24,7 @@ const Converter = ({
   fromCurrencyIndex,
   rate,
   setAmountToConvert,
+  setResultingAmount,
   setFromCurrencyIndex,
   setToCurrencyIndex,
   toBalance,
@@ -45,16 +46,20 @@ const Converter = ({
       </button>
     </div>
     <Currency
-      amount={amountToConvert}
+      amount={trimToPrecision(amountToConvert, 2)}
       balance={fromBalance}
       currencies={currencies}
       index={fromCurrencyIndex}
       name={fromCurrency}
-      setAmountToConvert={setAmountToConvert}
+      onChange={setAmountToConvert}
       selectCurrency={setFromCurrencyIndex}
     />
     <Currency
-      amount={isEmptyAmount(amountToConvert) ? null : amountToConvert * rate}
+      amount={
+        isEmptyAmount(amountToConvert)
+          ? ``
+          : trimToPrecision(`${amountToConvert * rate}`, 2)
+      }
       balance={toBalance}
       currencies={currencies}
       fromName={fromCurrency}
@@ -63,6 +68,7 @@ const Converter = ({
       name={toCurrency}
       rate={1 / rate}
       selectCurrency={setToCurrencyIndex}
+      onChange={setResultingAmount}
     />
   </form>
 )

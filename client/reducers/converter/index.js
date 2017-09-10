@@ -1,13 +1,14 @@
 import {
   FETCH_RATES_SUCCESS,
+  SET_AMOUNT_TO_CONVERT,
   SET_FROM_CURRENCY_INDEX,
-  SET_TO_CURRENCY_INDEX,
-  SET_AMOUNT_TO_CONVERT
+  SET_RESULTING_AMOUNT,
+  SET_TO_CURRENCY_INDEX
 } from './consts'
 
 import { fromJS } from 'immutable'
 import { isNumeric, isEmptyAmount } from '../../utils'
-import { convertedBalanceSelector } from '../../selectors'
+import { convertedBalanceSelector, rateSelector } from '../../selectors'
 
 export const initialState = fromJS({
   currencies: [
@@ -18,7 +19,7 @@ export const initialState = fromJS({
   rates: {},
   fromCurrencyIndex: 0,
   toCurrencyIndex: 1,
-  amountToConvert: null,
+  amountToConvert: ``,
   balance: {
     currencyIndex: 0,
     amount: 10000
@@ -30,6 +31,12 @@ const isValidAmountToConvert = (amount, state) =>
     (isNumeric(amount) && amount >= 0) &&
     convertedBalanceSelector({ converter: state }).fromBalance >= amount
   )
+
+const setAmountToConvert = (amountToConvert, state) => {
+  return isValidAmountToConvert(amountToConvert, state)
+    ? state.set(`amountToConvert`, amountToConvert)
+    : state
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -48,11 +55,14 @@ export default (state = initialState, action) => {
       return state.set(`fromCurrencyIndex`, action.payload)
     case SET_TO_CURRENCY_INDEX:
       return state.set(`toCurrencyIndex`, action.payload)
-    case SET_AMOUNT_TO_CONVERT: {
-      const amountToConvert = action.payload
-      return isValidAmountToConvert(amountToConvert, state)
-        ? state.set(`amountToConvert`, amountToConvert)
-        : state
+    case SET_AMOUNT_TO_CONVERT:
+      return setAmountToConvert(action.payload, state)
+    case SET_RESULTING_AMOUNT: {
+      const rate = rateSelector({ converter: state })
+      const amountToConvert = isEmptyAmount(action.payload)
+        ? ``
+        : `${action.payload / rate}`
+      return setAmountToConvert(amountToConvert, state)
     }
     default:
       return state

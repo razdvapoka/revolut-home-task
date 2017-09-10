@@ -1,4 +1,4 @@
-import { isEmptyAmount, isEmptyString } from '../../utils'
+import { isEmptyAmount, trimToPrecision } from '../../utils'
 import CurrencySelector from '../CurrencySelector'
 import React from 'react'
 import styles from './styles.css'
@@ -8,13 +8,13 @@ const join = (...args) => args.join(` `)
 class Currency extends React.Component {
   constructor (props) {
     super(props)
-    this.getAdjustedAmount = this.getAdjustedAmount.bind(this)
-    this.getSign = this.getSign.bind(this)
+    this.getSignSymbol = this.getSignSymbol.bind(this)
     this.handleInputValueChange = this.handleInputValueChange.bind(this)
   }
 
   render () {
     const {
+      amount,
       balance,
       currencies,
       fromName,
@@ -39,7 +39,7 @@ class Currency extends React.Component {
           <div className={styles.column}>
             <div className={styles.amountWrapper}>
               <span className={join(styles.sign, styles.bigText)}>
-                {this.getSign()}
+                {this.getSignSymbol()}
               </span>
               <input
                 ref={ref => { this.inputRef = ref }}
@@ -47,9 +47,8 @@ class Currency extends React.Component {
                   styles.amount,
                   styles.bigText
                 )}
-                value={this.getAdjustedAmount()}
+                value={amount}
                 onChange={this.handleInputValueChange}
-                readOnly={isShowingConversionResult}
               />
             </div>
             {isShowingConversionResult && (
@@ -68,47 +67,21 @@ class Currency extends React.Component {
     )
   }
 
-  componentDidMount () {
-    const { isShowingConversionResult } = this.props
-    if (!isShowingConversionResult) {
-      this.inputRef.focus()
-    }
-  }
-
   handleInputValueChange (e) {
-    const {
-      setAmountToConvert,
-      isShowingConversionResult
-    } = this.props
-
-    if (
-      !isShowingConversionResult &&
-      e.target
-    ) {
-      const amount = e.target.value
-      setAmountToConvert(isEmptyString(amount)
-        ? null
-        : e.target.value
-      )
+    const { onChange } = this.props
+    if (e.target) {
+      const amount = trimToPrecision(e.target.value, 2)
+      onChange(amount)
     }
   }
 
-  getSign () {
+  getSignSymbol () {
     const { amount, isShowingConversionResult } = this.props
     return isEmptyAmount(amount)
       ? ``
       : isShowingConversionResult
         ? `+`
         : `-`
-  }
-
-  getAdjustedAmount () {
-    const { amount, isShowingConversionResult } = this.props
-    return isEmptyAmount(amount)
-      ? ``
-      : isShowingConversionResult
-        ? parseFloat(amount).toFixed(2)
-        : amount
   }
 }
 
