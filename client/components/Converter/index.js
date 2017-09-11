@@ -17,62 +17,82 @@ import {
 } from '../../selectors'
 import { isEmptyAmount, trimToPrecision } from '../../utils'
 
-const Converter = ({
-  amountToConvert,
-  currencies,
-  fromBalance,
-  fromCurrency,
-  fromCurrencyIndex,
-  rate,
-  setAmountToConvert,
-  setResultingAmount,
-  setFromCurrencyIndex,
-  setToCurrencyIndex,
-  toBalance,
-  toCurrency,
-  toCurrencyIndex
-}) => (
-  <form className={styles.converter}>
-    <div className={styles.header}>
-      <button className={styles.buttonDisabled} disabled>
-        Cancel
-      </button>
-      <div className={styles.rate}>
-        {`1 ${fromCurrency} = ${rate} ${toCurrency}`}
-      </div>
-      <button
-        className={styles.button}
+class Converter extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  render () {
+    const {
+      amountToConvert,
+      currencies,
+      fromBalance,
+      fromCurrency,
+      fromCurrencyIndex,
+      rate,
+      setAmountToConvert,
+      setResultingAmount,
+      setFromCurrencyIndex,
+      setToCurrencyIndex,
+      toBalance,
+      toCurrency,
+      toCurrencyIndex
+    } = this.props
+
+    return (
+      <form
+        className={styles.converter}
+        onSubmit={this.handleSubmit}
       >
-        Exchange
-      </button>
-    </div>
-    <Currency
-      amount={trimToPrecision(amountToConvert, 2)}
-      balance={fromBalance}
-      currencies={currencies}
-      index={fromCurrencyIndex}
-      name={fromCurrency}
-      onChange={setAmountToConvert}
-      selectCurrency={setFromCurrencyIndex}
-    />
-    <Currency
-      amount={
-        isEmptyAmount(amountToConvert)
-          ? ``
-          : trimToPrecision(`${amountToConvert * rate}`, 2)
-      }
-      balance={toBalance}
-      currencies={currencies}
-      fromName={fromCurrency}
-      index={toCurrencyIndex}
-      isShowingConversionResult
-      name={toCurrency}
-      rate={1 / rate}
-      selectCurrency={setToCurrencyIndex}
-      onChange={setResultingAmount}
-    />
-  </form>
-)
+        <div className={styles.header}>
+          <button className={styles.buttonDisabled} disabled>
+            Cancel
+          </button>
+          <div className={styles.rate}>
+            {`1 ${fromCurrency} = ${rate} ${toCurrency}`}
+          </div>
+          <button
+            className={styles.button}
+          >
+            Exchange
+          </button>
+        </div>
+        <Currency
+          amount={trimToPrecision(amountToConvert, 2)}
+          balance={fromBalance}
+          currencies={currencies}
+          index={fromCurrencyIndex}
+          name={fromCurrency}
+          onChange={setAmountToConvert}
+          selectCurrency={setFromCurrencyIndex}
+        />
+        <Currency
+          amount={
+            isEmptyAmount(amountToConvert)
+              ? ``
+              : trimToPrecision(`${amountToConvert * rate}`, 2)
+          }
+          balance={toBalance}
+          currencies={currencies}
+          fromName={fromCurrency}
+          index={toCurrencyIndex}
+          isShowingConversionResult
+          name={toCurrency}
+          rate={1 / rate}
+          selectCurrency={setToCurrencyIndex}
+          onChange={setResultingAmount}
+        />
+      </form>
+    )
+  }
+
+  handleSubmit (e) {
+    const { convert } = this.props
+    e.preventDefault()
+    convert()
+  }
+}
 
 const mapStateToProps = state => ({
   amountToConvert: amountToConvertSelector(state),

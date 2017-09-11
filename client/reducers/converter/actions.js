@@ -1,4 +1,5 @@
 import {
+  CONVERT,
   FETCH_RATES_FAILURE,
   FETCH_RATES_REQUEST,
   FETCH_RATES_SUCCESS,
@@ -9,6 +10,7 @@ import {
 } from './consts'
 import { createAction } from 'redux-actions'
 
+export const convert = createAction(CONVERT)
 export const fetchRatesFailure = createAction(FETCH_RATES_FAILURE)
 export const fetchRatesRequest = createAction(FETCH_RATES_REQUEST)
 export const fetchRatesSuccess = createAction(FETCH_RATES_SUCCESS)

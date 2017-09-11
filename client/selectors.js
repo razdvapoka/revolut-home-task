@@ -52,5 +52,5 @@ export const fromCurrencyBalanceSelector = createSelector(
 export const toCurrencyBalanceSelector = createSelector(
   toCurrencyIndexSelector,
   balanceSelector,
-  (toCurrencyIndex, balance) => balance.get(toCurrencyIndex, 0)
+  (toCurrencyIndex, balance) => balance.get(`${toCurrencyIndex}`, 0)
 )

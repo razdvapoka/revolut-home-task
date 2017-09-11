@@ -1,4 +1,5 @@
 import {
+  CONVERT,
   FETCH_RATES_SUCCESS,
   SET_AMOUNT_TO_CONVERT,
   SET_FROM_CURRENCY_INDEX,
@@ -68,6 +69,31 @@ export default (state = initialState, action) => {
         ? ``
         : `${action.payload / conversionRate}`
       return setAmountToConvert(amountToConvert, state)
+    }
+    case CONVERT: {
+      const amountToConvert = state.get(`amountToConvert`)
+      const fromCurrencyIndex = state.get(`fromCurrencyIndex`)
+      const toCurrencyIndex = state.get(`toCurrencyIndex`)
+      const balance = state.get(`balance`)
+      const conversionRate = conversionRateSelector({ converter: state })
+
+      if (
+        !isEmptyAmount(amountToConvert) &&
+        fromCurrencyIndex !== toCurrencyIndex
+      ) {
+        const nextBalance = balance.set(
+          `${fromCurrencyIndex}`,
+          balance.get(`${fromCurrencyIndex}`) - amountToConvert
+        ).set(
+          `${toCurrencyIndex}`,
+          balance.get(`${toCurrencyIndex}`) + amountToConvert * conversionRate
+        )
+        return state
+          .set(`balance`, nextBalance)
+          .set(`amountToConvert`, ``)
+      }
+
+      return state
     }
     default:
       return state
