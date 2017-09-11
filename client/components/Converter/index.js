@@ -6,13 +6,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
   amountToConvertSelector,
-  convertedBalanceSelector,
+  conversionRateSelector,
   currenciesSelector,
-  fromCurrencySelector,
+  fromCurrencyBalanceSelector,
   fromCurrencyIndexSelector,
-  rateSelector,
-  toCurrencySelector,
-  toCurrencyIndexSelector
+  fromCurrencySelector,
+  toCurrencyBalanceSelector,
+  toCurrencyIndexSelector,
+  toCurrencySelector
 } from '../../selectors'
 import { isEmptyAmount, trimToPrecision } from '../../utils'
 
@@ -76,11 +77,11 @@ const Converter = ({
 const mapStateToProps = state => ({
   amountToConvert: amountToConvertSelector(state),
   currencies: currenciesSelector(state),
-  fromBalance: convertedBalanceSelector(state).fromBalance,
+  fromBalance: fromCurrencyBalanceSelector(state),
   fromCurrency: fromCurrencySelector(state),
   fromCurrencyIndex: fromCurrencyIndexSelector(state),
-  rate: rateSelector(state),
-  toBalance: convertedBalanceSelector(state).toBalance,
+  rate: conversionRateSelector(state),
+  toBalance: toCurrencyBalanceSelector(state),
   toCurrency: toCurrencySelector(state),
   toCurrencyIndex: toCurrencyIndexSelector(state)
 })

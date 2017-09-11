@@ -8,7 +8,11 @@ import {
 
 import { fromJS } from 'immutable'
 import { isNumeric, isEmptyAmount } from '../../utils'
-import { convertedBalanceSelector, rateSelector } from '../../selectors'
+
+import {
+  fromCurrencyBalanceSelector,
+  conversionRateSelector
+} from '../../selectors'
 
 export const initialState = fromJS({
   currencies: [
@@ -21,15 +25,16 @@ export const initialState = fromJS({
   toCurrencyIndex: 1,
   amountToConvert: ``,
   balance: {
-    currencyIndex: 0,
-    amount: 10000
+    0: 1000,
+    1: 1000,
+    2: 1000
   }
 })
 
 const isValidAmountToConvert = (amount, state) =>
   isEmptyAmount(amount) || (
     (isNumeric(amount) && amount >= 0) &&
-    convertedBalanceSelector({ converter: state }).fromBalance >= amount
+    fromCurrencyBalanceSelector({ converter: state }) >= amount
   )
 
 const setAmountToConvert = (amountToConvert, state) => {
@@ -58,10 +63,10 @@ export default (state = initialState, action) => {
     case SET_AMOUNT_TO_CONVERT:
       return setAmountToConvert(action.payload, state)
     case SET_RESULTING_AMOUNT: {
-      const rate = rateSelector({ converter: state })
+      const conversionRate = conversionRateSelector({ converter: state })
       const amountToConvert = isEmptyAmount(action.payload)
         ? ``
-        : `${action.payload / rate}`
+        : `${action.payload / conversionRate}`
       return setAmountToConvert(amountToConvert, state)
     }
     default:

@@ -30,13 +30,7 @@ export const toCurrencySelector = createSelector(
   (currencies, toCurrencyIndex) => currencies.get(toCurrencyIndex)
 )
 
-export const balanceCurrencySelector = createSelector(
-  currenciesSelector,
-  balanceSelector,
-  (currencies, balance) => currencies.get(balance.get(`currencyIndex`))
-)
-
-export const rateSelector = createSelector(
+export const conversionRateSelector = createSelector(
   fromCurrencySelector,
   toCurrencySelector,
   ratesSelector,
@@ -46,35 +40,17 @@ export const rateSelector = createSelector(
       : rates.getIn([ fromCurrency, toCurrency ])
 )
 
-const balanceToFromRateSelector = createSelector(
-  fromCurrencySelector,
-  balanceCurrencySelector,
-  ratesSelector,
-  (fromCurrency, balanceCurrency, rates) =>
-    balanceCurrency === fromCurrency
-      ? 1
-      : rates.getIn([ balanceCurrency, fromCurrency ])
-)
-
-const balanceToToRateSelector = createSelector(
-  toCurrencySelector,
-  balanceCurrencySelector,
-  ratesSelector,
-  (toCurrency, balanceCurrency, rates) =>
-    balanceCurrency === toCurrency
-      ? 1
-      : rates.getIn([ balanceCurrency, toCurrency ])
-)
-
-export const convertedBalanceSelector = createSelector(
-  balanceToFromRateSelector,
-  balanceToToRateSelector,
+export const fromCurrencyBalanceSelector = createSelector(
+  fromCurrencyIndexSelector,
   balanceSelector,
-  (fromRate, toRate, balance) => {
-    const balanceAmount = balance.get(`amount`)
-    return ({
-      fromBalance: balanceAmount * fromRate,
-      toBalance: balanceAmount * toRate
-    })
+  (fromCurrencyIndex, balance) => {
+    console.log(`fromCurrencyBalanceSelector`, fromCurrencyIndex, balance)
+    return balance.get(`${fromCurrencyIndex}`, 0)
   }
+)
+
+export const toCurrencyBalanceSelector = createSelector(
+  toCurrencyIndexSelector,
+  balanceSelector,
+  (toCurrencyIndex, balance) => balance.get(toCurrencyIndex, 0)
 )
