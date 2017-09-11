@@ -25,3 +25,7 @@ $ npm run build
 $ npm start
 $ open http://0.0.0.0:7000
 ```
+
+## Notes
+
+Every time the rates are fetched they are slightly shifted to imitate rates fluctuations.
